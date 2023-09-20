@@ -4,18 +4,24 @@ import { changeName, changeCost, addCar } from "../store";
 const CarForm = () => {
   const dispatch = useDispatch();
   const name = useSelector((state) => {
-    return state.name;
+    return state.form.name;
   });
   const cost = useSelector((state) => {
-    return state.cost;
+    return state.form.cost;
   });
+  // const { name, cost } = useSelector((state) => {
+  //   return {
+  //     name: state.form.name,
+  //     cost: state.form.cost,
+  //   };
+  // });
 
   const handleNameChange = (event) => {
     dispatch(changeName(event.target.value));
   };
 
   const handleCostChange = (event) => {
-    const carCost = parseInt(event.target.value) || 0; //! daha önce de böyle yazmıştık. Çünkü event bize string verir ama biz onu number olarak kullanmak istiyoruz.
+    const carCost = parseInt(event.target.value) || 0; //! daha önce de böyle yazmıştık. Çünkü event.target.value bize string verir ama biz onu number olarak kullanmak istiyoruz.
     dispatch(changeCost(carCost));
   };
 
@@ -30,7 +36,7 @@ const CarForm = () => {
       <form onSubmit={handleSubmit}>
         <div className="field-group">
           <div className="field">
-            <label className="label"> Car Name</label>
+            <label className="label">Name</label>
             <input
               className="input is-expanded"
               value={name}
@@ -38,10 +44,10 @@ const CarForm = () => {
             />
           </div>
           <div className="field">
-            <label className="label"> Car Value</label>
+            <label className="label">Cost</label>
             <input
               className="input is-expanded"
-              value={cost}
+              value={cost || ""}
               onChange={handleCostChange}
               type="number"
             />
