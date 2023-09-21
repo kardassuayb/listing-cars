@@ -4,11 +4,16 @@ import { removeCar } from "../store";
 const CarList = () => {
   const dispatch = useDispatch();
 
-  const cars = useSelector(({ cars: { data, searchTerm } }) => {
+  const { cars, name } = useSelector(({ form, cars: { data, searchTerm } }) => {
     //! Bu şekilde yazmamızın nedeni state içerisinden sadece istediğimiz verileri alabilmek için. Aksi takdirde aşağıdaki kodda her yer "state.cars.data" ve "state.cars.searchTerm" ile dolacaktı.
-    return data.filter((car) =>
+    const filteredCars = data.filter((car) =>
       car.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
+
+    return {
+      cars: filteredCars,
+      name: form.name,
+    };
   });
 
   const handleCarDelete = (car) => {
@@ -16,8 +21,10 @@ const CarList = () => {
   };
 
   const renderedCars = cars.map((car) => {
+    const bold = name && car.name.toLowerCase().includes(name.toLowerCase());
+
     return (
-      <div key={car.id} className="panel">
+      <div key={car.id} className={`panel ${bold && "bold"}`}>
         <p>
           {car.name} - ${car.cost}
         </p>
